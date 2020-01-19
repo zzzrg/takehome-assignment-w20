@@ -6,9 +6,7 @@ import mockdb.mockdb_interface as db
 app = Flask(__name__)
 
 
-def create_response(
-    data: dict = None, status: int = 200, message: str = ""
-) -> Tuple[Response, int]:
+def create_response(data: dict = None, status: int = 200, message: str = "") -> Tuple[Response, int]:
     """Wraps response in a consistent format throughout the API.
     
     Format inspired by https://medium.com/@shazow/how-i-design-json-api-responses-71900f00f2db
@@ -51,11 +49,16 @@ def mirror(name):
     data = {"name": name}
     return create_response(data)
 
-@app.route("/shows", methods=['GET'])
+@app.route("/shows", methods=['GET', 'POST'])
 def get_all_shows():
     return create_response({"shows": db.get('shows')})
 
-@app.route("/shows/<id>", methods=['DELETE'])
+@app.route("/shows/<id>", methods=['GET', 'DELETE'])
+def show_id(id):
+    if db.getById('shows', int(id)) is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response({"result": db.getById("shows", int(id))})
+
 def delete_show(id):
     if db.getById('shows', int(id)) is None:
         return create_response(status=404, message="No show with this id exists")
