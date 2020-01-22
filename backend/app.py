@@ -52,14 +52,15 @@ def mirror(name):
 
 @app.route("/shows", methods=['GET'])
 def get_all_shows():
-    return create_response({"shows": db.get('shows')})
+    minEpisodes = request.args.get('minEpisodes')
+    return create_response({"shows": db.get('shows', minEpisodes)})
 
 
 @app.route("/shows", methods=['POST'])
 def create_show():
-    data = request.json
-    if data["name"] is None or data["episodes_seen"] is None:
-        return create_response(status=422, message="Missing the following body parameter(s): ")
+    data = request.get_json()
+    if data.get('name') is None or data.get('episodes_seen') is None:
+        return create_response(status=422, message="An argument is missing. Please verify you have passed the required arguments.")
     return create_response(db.create("shows", data), status=201)
 
 
@@ -76,7 +77,7 @@ def update_show(id):
     if db.getById("shows", int(id)) is None:
         return create_response(status=404, message="Unable to find show with this id to update.")
     return create_response(db.updateById("shows", int(id), data))
-    
+
 
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):

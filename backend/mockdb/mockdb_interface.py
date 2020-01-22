@@ -4,7 +4,9 @@ import json
 db_state = initial_db_state
 
 
-def get(type):
+def get(type, episodes=None):
+    if episodes is not None:
+        return [show for show in db_state[type] if show['episodes_seen'] >= int(episodes)]
     return db_state[type]
 
 
