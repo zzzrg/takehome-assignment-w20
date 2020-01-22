@@ -49,23 +49,34 @@ def mirror(name):
     data = {"name": name}
     return create_response(data)
 
+
 @app.route("/shows", methods=['GET'])
 def get_all_shows():
     return create_response({"shows": db.get('shows')})
+
 
 @app.route("/shows", methods=['POST'])
 def create_show():
     data = request.json
     if data["name"] is None or data["episodes_seen"] is None:
-        return create_response(status=422, message="Missing the following parameter: " + data["name"])
-    return create_response({"result": db.create("shows", data)}, status=201)
-    
+        return create_response(status=422, message="Missing the following body parameter(s): ")
+    return create_response(db.create("shows", data), status=201)
+
 
 @app.route("/shows/<id>", methods=['GET'])
 def show_id(id):
     if db.getById('shows', int(id)) is None:
-        return create_response(status=404, message="No show with this id exists")
-    return create_response({"result": db.getById("shows", int(id))})
+        return create_response(status=404, message="No show with this id exists.")
+    return create_response(db.getById("shows", int(id)))
+
+
+@app.route("/shows/<id>", methods=['PUT'])
+def update_show(id):
+    data = request.json
+    if db.getById("shows", int(id)) is None:
+        return create_response(status=404, message="Unable to find show with this id to update.")
+    return create_response(db.updateById("shows", int(id), data))
+    
 
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):
