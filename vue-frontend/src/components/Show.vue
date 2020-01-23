@@ -1,7 +1,7 @@
 <template>
   <!-- PART 4: Add your code here -->
-  <div>
-    <p>{{name}}</p>
+  <div class="shows">
+    <p id="title">{{name}}</p>
     <Counter v-bind:count="episodes_seen"/>
     <br />
   </div>
@@ -21,15 +21,20 @@ export default {
     name: String,
     episodes_seen: Number
   },
-
-  // data() {
-  //   return {
-  //     episodes_seen: this.episodes_seen
-  //   }
-  // }
-
 };
 </script>
 
-<style>
+<style scoped>
+  #title{
+    font-weight:bold;
+  }
+  .shows{
+    background-color:#35495d;
+    color:white;
+    padding-top:2em;
+    margin:2em auto;
+    width:25em;
+    border-radius:10px;
+    left:50%
+  }
 </style>

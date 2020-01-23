@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="homecontainer">
     <!-- PART 1: Pass in a "complete" prop here -->
     <Instructions complete="done"/>
     <!-- PART 4: Modify the Show component to accept all of these props -->
@@ -10,6 +10,8 @@
       :name="show.name"
       :episodes_seen="show.episodes_seen"
     />
+    <input v-model="message" placeholder="Name of show">
+    <button type="button" v-on:click="addshow(message)">Submit</button>
   </div>
 </template>
 
@@ -30,11 +32,23 @@ export default {
         { id: 3, name: "Black Mirror", episodes_seen: 3 }
       ]
     };
+  },
+  methods : {
+    addshow: function(message){
+      this.shows.push({
+        id: this.shows.length+1,
+        name: message,
+        episodes_seen: 0
+      })
+    }
   }
 };
 </script>
 
 <style>
+  .homecontainer{
+    margin-bottom: 10vh;
+  }
 </style>
 
 

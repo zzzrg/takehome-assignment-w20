@@ -13,15 +13,27 @@ export default {
   props:{
     count:Number
   },
-
-  // data() {
-  //   return {
-  //     count: this.episodes,
-  //   };
-  // }
 };
 </script>
 
 <style>
+  button{
+    color:white;
+    border:none;
+    background-color:#40b883;
+    padding:10px;
+    margin-left:10px;
+    margin-right:10px;
+    border-radius: 5px;
+    transition: all 0.2s ease 0s;
+
+  }
+  button #decrement{
+    background-color: red;
+  }
+  button:active{
+    background-color:#273644;
+  }
+
 </style>
 
